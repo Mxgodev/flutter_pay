@@ -74,20 +74,28 @@ class FlutterPay {
     }
 
     try {
-      var response = await _channel.invokeMethod('requestPayment', params);
-      var payResponse = Map<String, String>.from(response);
-      if (payResponse == null) {
+      String response = await _channel.invokeMethod('requestPayment', params);
+      //var payResponse = Map<String, String>.from(response);
+      //var payResponse = response;
+      if (response == null) {
         throw FlutterPayError(description: "Pay response cannot be parsed");
       }
 
-      var paymentToken = payResponse["token"];
-      if (paymentToken?.isNotEmpty ?? false) {
-        print("Payment token: $paymentToken");
-        return paymentToken;
+      if(response.isNotEmpty) {
+        print("Payment response: $response");
+        return response;
       } else {
-        print("Payment token: null");
         return "";
       }
+
+      // var paymentToken = payResponse["token"];
+      // if (paymentToken?.isNotEmpty ?? false) {
+      //   print("Payment token: $paymentToken");
+      //   return paymentToken;
+      // } else {
+      //   print("Payment token: null");
+      //   return "";
+      // }
     } on PlatformException catch (error) {
       if (error.code == "userCancelledError") {
         print(error.message);

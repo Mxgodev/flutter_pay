@@ -275,21 +275,25 @@ class FlutterPayPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.Activi
                     val paymentData = PaymentData.getFromIntent(data)
                     print("Payment data: ${paymentData?.toJson()}\n")
 
-                    if (paymentData != null) {
-                        val paymentDataString = paymentData.toJson()
-                        val paymentDataJSONObject = JSONObject(paymentDataString)
-                        val paymentMethodData = paymentDataJSONObject["paymentMethodData"] as? JSONObject
-                        if (paymentMethodData != null) {
-                            val tokenizationData = paymentMethodData["tokenizationData"] as? JSONObject
-                            if (tokenizationData != null) {
-                                val token = tokenizationData["token"] as? String
-                                if (token != null) {
-                                    val response: Map<String, String> = mapOf("token" to token)
-                                    this.lastResult?.success(response)
-                                }
-                            }
-                        }
+                    if(paymentData != null) {
+                        this.lastResult?.success(paymentData.toJson());
                     }
+
+//                    if (paymentData != null) {
+//                        val paymentDataString = paymentData.toJson()
+//                        val paymentDataJSONObject = JSONObject(paymentDataString)
+//                        val paymentMethodData = paymentDataJSONObject["paymentMethodData"] as? JSONObject
+//                        if (paymentMethodData != null) {
+//                            val tokenizationData = paymentMethodData["tokenizationData"] as? JSONObject
+//                            if (tokenizationData != null) {
+//                                val token = tokenizationData["token"] as? String
+//                                if (token != null) {
+//                                    val response: Map<String, String> = mapOf("token" to token)
+//                                    this.lastResult?.success(response)
+//                                }
+//                            }
+//                        }
+//                    }
                 }
 
             } else if (resultCode == Activity.RESULT_CANCELED) {
